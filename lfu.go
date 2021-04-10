@@ -27,7 +27,7 @@ func (c *LFUCache) Put(key string, value interface{}) (err error) {
 
 	err = c.redisClient.HSet(context.Background(), LFUHashName, key, value).Err()
 
-	c.frequentlyIncr(key)
+	go c.frequentlyIncr(key)
 	return
 }
 
@@ -39,7 +39,7 @@ func (c *LFUCache) Get(key string) (value string, err error) {
 		return
 	}
 
-	c.frequentlyIncr(key)
+	go c.frequentlyIncr(key)
 	return
 }
 
